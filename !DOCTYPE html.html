@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Roblox Builds Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 60px 40px;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .build-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .build-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .build-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+            background: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .build-card h3 {
+            margin-top: 15px;
+            color: #333;
+            font-size: 1.3em;
+        }
+
+        .build-card p {
+            margin-top: 10px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .placeholder-image {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2em;
+            height: 200px;
+            border-radius: 10px;
+        }
+
+        footer {
+            background: #2c3e50;
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        footer h2 {
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+
+        .socials {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255,255,255,0.1);
+            padding: 15px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .social-link:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        }
+
+        .social-icon {
+            width: 30px;
+            height: 30px;
+            font-size: 1.5em;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2em;
+            }
+
+            .content {
+                padding: 40px 20px;
+            }
+
+            .socials {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .social-link {
+                width: 80%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎮 My Roblox Builds</h1>
+            <p>Welcome to my portfolio of creative builds!</p>
+        </header>
+
+        <div class="content">
+            <div class="gallery">
+                <!-- Build Card 1 -->
+                <div class="build-card">
+                    <div class="placeholder-image">Build Image 1</div>
+                    <h3>Project Name 1</h3>
+                    <p>Add a description of your amazing build here. Describe what makes it special!</p>
+                </div>
+
+                <!-- Build Card 2 -->
+                <div class="build-card">
+                    <div class="placeholder-image">Build Image 2</div>
+                    <h3>Project Name 2</h3>
+                    <p>Add a description of your amazing build here. Describe what makes it special!</p>
+                </div>
+
+                <!-- Build Card 3 -->
+                <div class="build-card">
+                    <div class="placeholder-image">Build Image 3</div>
+                    <h3>Project Name 3</h3>
+                    <p>Add a description of your amazing build here. Describe what makes it special!</p>
+                </div>
+
+                <!-- Build Card 4 -->
+                <div class="build-card">
+                    <div class="placeholder-image">Build Image 4</div>
+                    <h3>Project Name 4</h3>
+                    <p>Add a description of your amazing build here. Describe what makes it special!</p>
+                </div>
+
+                <!-- Build Card 5 -->
+                <div class="build-card">
+                    <div class="placeholder-image">Build Image 5</div>
+                    <h3>Project Name 5</h3>
+                    <p>Add a description of your amazing build here. Describe what makes it special!</p>
+                </div>
+
+                <!-- Build Card 6 -->
+                <div class="build-card">
+                    <div class="placeholder-image">Build Image 6</div>
+                    <h3>Project Name 6</h3>
+                    <p>Add a description of your amazing build here. Describe what makes it special!</p>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <h2>Connect With Me</h2>
+            <div class="socials">
+                <a href="https://www.roblox.com/users/profile?username=slink2000" class="social-link" target="_blank">
+                    <span class="social-icon">🎮</span>
+                    <span>Roblox: @slink2000</span>
+                </a>
+                
+                <a href="https://www.youtube.com/@jumpingKatyu" class="social-link" target="_blank">
+                    <span class="social-icon">📺</span>
+                    <span>YouTube: @jumpingKatyu</span>
+                </a>
+                
+                <a href="https://discord.com/users/jumpinglury" class="social-link" target="_blank">
+                    <span class="social-icon">💬</span>
+                    <span>Discord: jumpinglury</span>
+                </a>
+                
+                <a href="https://x.com/KatyuXfurold" class="social-link" target="_blank">
+                    <span class="social-icon">🐦</span>
+                    <span>X: @KatyuXfurold</span>
+                </a>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
