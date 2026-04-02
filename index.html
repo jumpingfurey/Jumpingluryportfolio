@@ -25,7 +25,6 @@
             padding: 0 40px;
         }
 
-        /* Navigation */
         nav {
             padding: 30px 0;
             border-bottom: 1px solid #1f1f1f;
@@ -66,7 +65,6 @@
             color: #fff;
         }
 
-        /* Hero Section */
         .hero {
             padding: 120px 0;
             border-bottom: 1px solid #1f1f1f;
@@ -113,7 +111,6 @@
             50% { opacity: 0.5; }
         }
 
-        /* Section Titles */
         .section-title {
             font-size: 0.8em;
             font-weight: 600;
@@ -123,7 +120,6 @@
             margin-bottom: 50px;
         }
 
-        /* Portfolio Grid */
         .portfolio {
             padding: 100px 0;
             border-bottom: 1px solid #1f1f1f;
@@ -322,7 +318,6 @@
             overflow: hidden;
         }
 
-        /* Footer */
         footer {
             padding: 80px 0;
         }
@@ -380,21 +375,10 @@
             fill: #fff;
         }
 
-        .social-link.discord:hover svg {
-            fill: #5865F2;
-        }
-
-        .social-link.youtube:hover svg {
-            fill: #FF0000;
-        }
-
-        .social-link.twitter:hover svg {
-            fill: #fff;
-        }
-
-        .social-link.roblox:hover svg {
-            fill: #fff;
-        }
+        .social-link.discord:hover svg { fill: #5865F2; }
+        .social-link.youtube:hover svg { fill: #FF0000; }
+        .social-link.twitter:hover svg { fill: #fff; }
+        .social-link.roblox:hover svg { fill: #fff; }
 
         .social-handles {
             display: flex;
@@ -413,9 +397,7 @@
             transition: color 0.2s ease;
         }
 
-        .handle:hover {
-            color: #fff;
-        }
+        .handle:hover { color: #fff; }
 
         .handle svg {
             width: 18px;
@@ -423,48 +405,19 @@
             fill: #444;
         }
 
-        /* Responsive */
         @media (max-width: 1024px) {
-            .grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
+            .grid { grid-template-columns: repeat(2, 1fr); }
         }
 
         @media (max-width: 768px) {
-            .container {
-                padding: 0 20px;
-            }
-
-            .hero h1 {
-                font-size: 2.5em;
-            }
-
-            .grid {
-                grid-template-columns: 1fr;
-            }
-
-            .project-card.featured .project-image {
-                height: 250px;
-            }
-
-            .footer-content {
-                flex-direction: column;
-                gap: 40px;
-            }
-
-            .nav-links {
-                display: none;
-            }
-
-            .lightbox img {
-                max-width: 95%;
-                max-height: 60vh;
-            }
-
-            .lightbox-close {
-                top: 15px;
-                right: 15px;
-            }
+            .container { padding: 0 20px; }
+            .hero h1 { font-size: 2.5em; }
+            .grid { grid-template-columns: 1fr; }
+            .project-card.featured .project-image { height: 250px; }
+            .footer-content { flex-direction: column; gap: 40px; }
+            .nav-links { display: none; }
+            .lightbox img { max-width: 95%; max-height: 60vh; }
+            .lightbox-close { top: 15px; right: 15px; }
         }
     </style>
 </head>
@@ -541,7 +494,7 @@
                     </div>
                 </div>
 
-                <!-- ========== PROJECT 4 — Forest Build ========== -->
+                <!-- ========== PROJECT 4 — Enchanted Forest ========== -->
                 <div class="project-card" onclick="openLightbox(this)">
                     <div class="project-image">
                         <img src="https://i.postimg.cc/nzchtD3Z/Screenshot-2025-07-17-224046.png" alt="Dense enchanted forest with volumetric lighting filtering through the canopy">
@@ -585,6 +538,37 @@
                             <span class="tag">Fantasy</span>
                             <span class="tag">Environment</span>
                             <span class="tag">Terrain</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ========== PROJECT 7 — Forest Build ========== -->
+                <div class="project-card" onclick="openLightbox(this)">
+                    <div class="project-image">
+                        <img src="https://i.postimg.cc/DfgtRNG8/im8677age.png" alt="Lush forest build with detailed trees and natural ground cover">
+                    </div>
+                    <div class="project-info">
+                        <h3>Forest Build</h3>
+                        <p>Richly detailed forest scene with layered vegetation, mossy undergrowth, and naturalistic tree placement creating an immersive woodland feel</p>
+                        <div class="project-tags">
+                            <span class="tag">Nature</span>
+                            <span class="tag">Environment</span>
+                            <span class="tag">Detailed</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ========== PROJECT 8 — First Build ========== -->
+                <div class="project-card featured" onclick="openLightbox(this)">
+                    <div class="project-image">
+                        <img src="https://i.postimg.cc/D0Tn54Rc/Screenshot-2025-08-12-151252.png" alt="First ever Roblox build showing early creativity and passion for building">
+                    </div>
+                    <div class="project-info">
+                        <h3>First Build</h3>
+                        <p>Where it all started — my very first Roblox build, showing early creativity and the spark that grew into a passion for world-building</p>
+                        <div class="project-tags">
+                            <span class="tag">Origins</span>
+                            <span class="tag">Milestone</span>
                         </div>
                     </div>
                 </div>
