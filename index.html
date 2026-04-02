@@ -181,13 +181,6 @@
             transform: scale(1.05);
         }
 
-        .project-image .placeholder {
-            position: absolute;
-            color: #333;
-            font-size: 0.9em;
-            pointer-events: none;
-        }
-
         .project-info {
             padding: 25px;
         }
@@ -325,7 +318,6 @@
             font-size: 0.8em;
         }
 
-        /* Prevent scroll when lightbox is open */
         body.lightbox-open {
             overflow: hidden;
         }
@@ -534,59 +526,65 @@
                     </div>
                 </div>
 
-                <!-- ========== PROJECT 3 — Stylised Islands ========== -->
+                <!-- ========== PROJECT 3 — Stylized Islands ========== -->
                 <div class="project-card" onclick="openLightbox(this)">
                     <div class="project-image">
-                        <img src="https://i.postimg.cc/4xZKFrbn/Screenshot-2026-03-01-003404.png" alt="Stylised floating islands with vibrant colours and lush vegetation">
+                        <img src="https://i.postimg.cc/4xZKFrbn/Screenshot-2026-03-01-003404.png" alt="Stylized floating islands with vibrant colors and lush vegetation">
                     </div>
                     <div class="project-info">
-                        <h3>Stylised Islands</h3>
-                        <p>Vibrant floating island chain with lush hand-painted vegetation, crystal-clear waters, and a whimsical colour palette</p>
+                        <h3>Stylized Islands</h3>
+                        <p>Vibrant floating island chain with lush hand-painted vegetation, crystal-clear waters, and a whimsical color palette</p>
                         <div class="project-tags">
-                            <span class="tag">Stylised</span>
+                            <span class="tag">Stylized</span>
                             <span class="tag">Terrain</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- ========== PROJECT 4 ========== -->
-                <div class="project-card">
+                <!-- ========== PROJECT 4 — Forest Build ========== -->
+                <div class="project-card" onclick="openLightbox(this)">
                     <div class="project-image">
-                        <span class="placeholder">Add Screenshot</span>
+                        <img src="https://i.postimg.cc/nzchtD3Z/Screenshot-2025-07-17-224046.png" alt="Dense enchanted forest with volumetric lighting filtering through the canopy">
                     </div>
                     <div class="project-info">
-                        <h3>Project Name</h3>
-                        <p>Brief description of your build</p>
+                        <h3>Enchanted Forest</h3>
+                        <p>Dense woodland environment with towering trees, volumetric god rays piercing through the canopy, and rich natural foliage</p>
                         <div class="project-tags">
-                            <span class="tag">Showcase</span>
+                            <span class="tag">Environment</span>
+                            <span class="tag">Nature</span>
+                            <span class="tag">Lighting</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- ========== PROJECT 5 ========== -->
-                <div class="project-card">
+                <!-- ========== PROJECT 5 — Stylized Islands II ========== -->
+                <div class="project-card" onclick="openLightbox(this)">
                     <div class="project-image">
-                        <span class="placeholder">Add Screenshot</span>
+                        <img src="https://i.postimg.cc/FHVf5N9t/Screenshot-2025-08-18-220223.png" alt="Stylized islands part two with expanded terrain and detailed coastline">
                     </div>
                     <div class="project-info">
-                        <h3>Project Name</h3>
-                        <p>Brief description of your build</p>
+                        <h3>Stylized Islands II</h3>
+                        <p>Expanded island archipelago featuring sculpted coastlines, tropical vegetation, and warm golden-hour atmosphere</p>
                         <div class="project-tags">
-                            <span class="tag">Low Poly</span>
+                            <span class="tag">Stylized</span>
+                            <span class="tag">Terrain</span>
+                            <span class="tag">Expansion</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- ========== PROJECT 6 ========== -->
-                <div class="project-card">
+                <!-- ========== PROJECT 6 — Sky Islands ========== -->
+                <div class="project-card" onclick="openLightbox(this)">
                     <div class="project-image">
-                        <span class="placeholder">Add Screenshot</span>
+                        <img src="https://i.postimg.cc/3N28XFRz/Screenshot-2025-08-18-002846.png" alt="Floating sky islands suspended above the clouds with lush greenery">
                     </div>
                     <div class="project-info">
-                        <h3>Project Name</h3>
-                        <p>Brief description of your build</p>
+                        <h3>Sky Islands</h3>
+                        <p>Majestic floating landmasses suspended above the clouds, featuring cascading waterfalls, lush canopies, and ethereal atmosphere</p>
                         <div class="project-tags">
-                            <span class="tag">Realistic</span>
+                            <span class="tag">Fantasy</span>
+                            <span class="tag">Environment</span>
+                            <span class="tag">Terrain</span>
                         </div>
                     </div>
                 </div>
@@ -692,14 +690,12 @@
             document.body.classList.remove('lightbox-open');
         }
 
-        // Close on background click
         lightbox.addEventListener('click', function(e) {
             if (e.target === lightbox || e.target === document.querySelector('.lightbox-hint')) {
                 closeLightbox();
             }
         });
 
-        // Close on ESC key
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 closeLightbox();
