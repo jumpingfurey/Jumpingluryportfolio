@@ -20,35 +20,16 @@
             overflow-x: hidden;
         }
 
-        /* ===== Cursor ===== */
-        .cursor {
-            width: 20px;
-            height: 20px;
-            border: 2px solid #3b82f6;
-            border-radius: 50%;
+        /* ===== Scroll Progress ===== */
+        .progress-bar {
             position: fixed;
-            pointer-events: none;
+            top: 0;
+            left: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899);
             z-index: 9999;
-            transition: transform 0.15s ease, border-color 0.2s ease;
-            transform: translate(-50%, -50%);
-        }
-
-        .cursor-dot {
-            width: 6px;
-            height: 6px;
-            background: #3b82f6;
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 9999;
-            transform: translate(-50%, -50%);
-            transition: transform 0.05s ease;
-        }
-
-        .cursor.hovering {
-            transform: translate(-50%, -50%) scale(2);
-            border-color: #60a5fa;
-            background: rgba(59, 130, 246, 0.1);
+            transition: width 0.1s ease;
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.8);
         }
 
         /* ===== Particles ===== */
@@ -65,19 +46,30 @@
 
         .particle {
             position: absolute;
-            width: 2px;
-            height: 2px;
-            background: #3b82f6;
             border-radius: 50%;
             opacity: 0;
             animation: floatParticle linear infinite;
         }
 
         @keyframes floatParticle {
-            0% { opacity: 0; transform: translateY(100vh) scale(0); }
-            10% { opacity: 0.6; }
-            90% { opacity: 0.3; }
-            100% { opacity: 0; transform: translateY(-10vh) scale(1.5); }
+            0% { opacity: 0; transform: translateY(100vh) scale(0) rotate(0deg); }
+            10% { opacity: 0.4; }
+            90% { opacity: 0.2; }
+            100% { opacity: 0; transform: translateY(-10vh) scale(1.5) rotate(360deg); }
+        }
+
+        /* ===== Ripple ===== */
+        .ripple {
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            animation: rippleOut 0.8s ease forwards;
+        }
+
+        @keyframes rippleOut {
+            0% { width: 0; height: 0; opacity: 0.4; transform: translate(-50%, -50%); }
+            100% { width: 150px; height: 150px; opacity: 0; transform: translate(-50%, -50%); }
         }
 
         .container {
@@ -97,11 +89,12 @@
             background: rgba(13, 13, 13, 0.85);
             backdrop-filter: blur(20px);
             z-index: 100;
-            transition: box-shadow 0.3s ease;
+            transition: box-shadow 0.3s ease, border-color 0.3s ease;
         }
 
         nav.scrolled {
-            box-shadow: 0 4px 30px rgba(59, 130, 246, 0.1);
+            box-shadow: 0 4px 30px rgba(59, 130, 246, 0.08);
+            border-color: #2a2a2a;
         }
 
         nav .container {
@@ -116,25 +109,17 @@
             color: #fff;
             letter-spacing: -0.5px;
             position: relative;
+            cursor: default;
         }
 
         .logo span {
             color: #3b82f6;
+            display: inline-block;
+            transition: transform 0.3s ease;
         }
 
-        .logo::after {
-            content: '';
-            position: absolute;
-            bottom: -3px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: #3b82f6;
-            transition: width 0.3s ease;
-        }
-
-        .logo:hover::after {
-            width: 100%;
+        .logo:hover span {
+            transform: skewX(-5deg);
         }
 
         .nav-links {
@@ -150,17 +135,18 @@
             font-weight: 500;
             transition: color 0.2s ease;
             position: relative;
+            padding-bottom: 4px;
         }
 
         .nav-links a::after {
             content: '';
             position: absolute;
-            bottom: -4px;
-            left: 0;
+            bottom: 0;
+            left: 50%;
             width: 0;
             height: 1px;
             background: #3b82f6;
-            transition: width 0.3s ease;
+            transition: width 0.3s ease, left 0.3s ease;
         }
 
         .nav-links a:hover {
@@ -169,6 +155,7 @@
 
         .nav-links a:hover::after {
             width: 100%;
+            left: 0;
         }
 
         /* ===== Hero ===== */
@@ -179,20 +166,34 @@
             overflow: hidden;
         }
 
-        .hero::before {
-            content: '';
+        .hero-bg {
             position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(ellipse at center, rgba(59, 130, 246, 0.05) 0%, transparent 60%);
-            animation: heroGlow 8s ease-in-out infinite alternate;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 20% 50%, rgba(59, 130, 246, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(139, 92, 246, 0.04) 0%, transparent 50%);
+            animation: heroBgShift 12s ease-in-out infinite alternate;
         }
 
-        @keyframes heroGlow {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(5%, 5%); }
+        @keyframes heroBgShift {
+            0% { opacity: 0.6; transform: scale(1); }
+            100% { opacity: 1; transform: scale(1.05); }
+        }
+
+        /* Animated grid lines */
+        .hero-grid {
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(59, 130, 246, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(59, 130, 246, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(60px); }
         }
 
         .hero h1 {
@@ -203,8 +204,15 @@
             margin-bottom: 20px;
             line-height: 1.1;
             opacity: 0;
-            transform: translateY(30px);
-            animation: fadeUp 0.8s ease forwards 0.2s;
+            transform: translateY(40px);
+            animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.2s;
+        }
+
+        /* Typewriter word swap */
+        .hero h1 .swap-word {
+            color: #3b82f6;
+            display: inline-block;
+            position: relative;
         }
 
         .hero p {
@@ -213,8 +221,8 @@
             max-width: 500px;
             font-weight: 400;
             opacity: 0;
-            transform: translateY(30px);
-            animation: fadeUp 0.8s ease forwards 0.4s;
+            transform: translateY(40px);
+            animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.4s;
         }
 
         .status {
@@ -228,15 +236,18 @@
             font-size: 0.85em;
             color: #888;
             opacity: 0;
-            transform: translateY(30px);
-            animation: fadeUp 0.8s ease forwards 0.6s;
+            transform: translateY(40px);
+            animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.6s;
             border: 1px solid #1f1f1f;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            transition: all 0.3s ease;
+            cursor: default;
         }
 
         .status:hover {
             border-color: #22c55e;
-            box-shadow: 0 0 20px rgba(34, 197, 94, 0.15);
+            box-shadow: 0 0 25px rgba(34, 197, 94, 0.15);
+            color: #22c55e;
+            transform: translateY(-2px);
         }
 
         .status-dot {
@@ -244,16 +255,77 @@
             height: 8px;
             background: #22c55e;
             border-radius: 50%;
-            animation: pulse 2s infinite;
+            animation: statusPulse 2s infinite;
         }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4); }
-            50% { opacity: 0.8; box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
+        @keyframes statusPulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.5); }
+            50% { box-shadow: 0 0 0 8px rgba(34, 197, 94, 0); }
+        }
+
+        /* Floating badge */
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 15px;
+            margin-left: 15px;
+            padding: 6px 14px;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 50px;
+            font-size: 0.78em;
+            color: #3b82f6;
+            opacity: 0;
+            animation: fadeUp 1s ease forwards 0.8s;
+            cursor: default;
+            transition: all 0.3s ease;
+        }
+
+        .hero-badge:hover {
+            background: rgba(59, 130, 246, 0.2);
+            transform: translateY(-2px);
         }
 
         @keyframes fadeUp {
             to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== Stats row ===== */
+        .stats {
+            display: flex;
+            gap: 50px;
+            margin-top: 60px;
+            padding-top: 60px;
+            border-top: 1px solid #1f1f1f;
+            opacity: 0;
+            animation: fadeUp 1s ease forwards 1s;
+        }
+
+        .stat {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            cursor: default;
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: -1px;
+            transition: color 0.3s ease;
+        }
+
+        .stat:hover .stat-number {
+            color: #3b82f6;
+        }
+
+        .stat-label {
+            font-size: 0.8em;
+            color: #444;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         /* ===== Section Title ===== */
@@ -264,16 +336,15 @@
             text-transform: uppercase;
             letter-spacing: 2px;
             margin-bottom: 50px;
-            position: relative;
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
         }
 
-        .section-title::after {
+        .section-title::before {
             content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 0;
-            width: 30px;
+            display: block;
+            width: 20px;
             height: 1px;
             background: #3b82f6;
         }
@@ -299,8 +370,30 @@
                         box-shadow 0.4s ease;
             cursor: pointer;
             opacity: 0;
-            transform: translateY(40px);
+            transform: translateY(50px);
             border: 1px solid #1f1f1f;
+            position: relative;
+        }
+
+        /* Animated border glow on hover */
+        .project-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 12px;
+            padding: 1px;
+            background: linear-gradient(135deg, transparent, #3b82f6, transparent);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+        }
+
+        .project-card:hover::before {
+            opacity: 1;
         }
 
         .project-card.visible {
@@ -309,9 +402,9 @@
         }
 
         .project-card:hover {
-            transform: translateY(-8px) scale(1.01);
-            background: #1a1a1a;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(59, 130, 246, 0.2);
+            transform: translateY(-10px) scale(1.01);
+            background: #181818;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(59, 130, 246, 0.05);
         }
 
         .project-card.featured {
@@ -340,53 +433,75 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.4s ease;
+            filter: brightness(0.95);
         }
 
         .project-card:hover .project-image img {
-            transform: scale(1.08);
+            transform: scale(1.1);
+            filter: brightness(1.05);
         }
 
-        /* Image shine effect */
-        .project-image::after {
+        /* Shine sweep */
+        .project-image::before {
             content: '';
             position: absolute;
             top: 0;
             left: -100%;
-            width: 60%;
+            width: 50%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
-            transition: left 0.6s ease;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+            z-index: 1;
+            transition: left 0.7s ease;
         }
 
-        .project-card:hover .project-image::after {
-            left: 150%;
+        .project-card:hover .project-image::before {
+            left: 200%;
         }
 
-        /* Click ripple overlay */
-        .project-image .click-hint {
+        /* Overlay on hover */
+        .project-image-overlay {
             position: absolute;
-            bottom: 10px;
-            right: 10px;
-            background: rgba(0,0,0,0.6);
-            color: #888;
-            font-size: 0.7em;
-            padding: 4px 10px;
-            border-radius: 20px;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 60%);
             opacity: 0;
-            transform: translateY(5px);
-            transition: opacity 0.3s ease, transform 0.3s ease;
-            backdrop-filter: blur(4px);
-            border: 1px solid #333;
+            transition: opacity 0.4s ease;
+            z-index: 2;
+            display: flex;
+            align-items: flex-end;
+            padding: 20px;
         }
 
-        .project-card:hover .click-hint {
+        .project-card:hover .project-image-overlay {
             opacity: 1;
+        }
+
+        .overlay-text {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #fff;
+            font-size: 0.8em;
+            font-weight: 500;
+            transform: translateY(10px);
+            transition: transform 0.3s ease 0.1s;
+        }
+
+        .project-card:hover .overlay-text {
             transform: translateY(0);
+        }
+
+        .overlay-text svg {
+            width: 14px;
+            height: 14px;
+            stroke: #fff;
+            stroke-width: 2;
+            fill: none;
         }
 
         .project-info {
             padding: 25px;
+            position: relative;
         }
 
         .project-info h3 {
@@ -394,7 +509,7 @@
             font-weight: 600;
             color: #fff;
             margin-bottom: 8px;
-            transition: color 0.2s ease;
+            transition: color 0.3s ease;
         }
 
         .project-card:hover .project-info h3 {
@@ -403,12 +518,12 @@
 
         .project-info p {
             font-size: 0.9em;
-            color: #666;
-            transition: color 0.2s ease;
+            color: #555;
+            transition: color 0.3s ease;
         }
 
         .project-card:hover .project-info p {
-            color: #888;
+            color: #777;
         }
 
         .project-tags {
@@ -423,14 +538,14 @@
             background: #1f1f1f;
             border-radius: 6px;
             font-size: 0.75em;
-            color: #888;
-            transition: background 0.2s ease, color 0.2s ease;
+            color: #666;
             border: 1px solid transparent;
+            transition: all 0.2s ease;
         }
 
         .project-card:hover .tag {
-            background: #252525;
-            border-color: #333;
+            border-color: #2a2a2a;
+            color: #888;
         }
 
         /* ===== Lightbox ===== */
@@ -441,34 +556,33 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0);
+            background: rgba(0,0,0,0);
             z-index: 1000;
             align-items: center;
             justify-content: center;
             flex-direction: column;
             padding: 40px;
-            cursor: pointer;
-            transition: background 0.3s ease;
+            transition: background 0.4s ease;
         }
 
         .lightbox.active {
             display: flex;
-            background: rgba(0, 0, 0, 0.92);
+            background: rgba(0,0,0,0.93);
         }
 
         .lightbox img {
             max-width: 90%;
-            max-height: 75vh;
+            max-height: 72vh;
             border-radius: 12px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 30px 80px rgba(0,0,0,0.6);
             object-fit: contain;
-            transform: scale(0.9);
+            transform: scale(0.85) translateY(20px);
             opacity: 0;
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
         }
 
         .lightbox.active img {
-            transform: scale(1);
+            transform: scale(1) translateY(0);
             opacity: 1;
         }
 
@@ -477,8 +591,8 @@
             margin-top: 25px;
             max-width: 600px;
             opacity: 0;
-            transform: translateY(10px);
-            transition: opacity 0.3s ease 0.15s, transform 0.3s ease 0.15s;
+            transform: translateY(15px);
+            transition: opacity 0.4s ease 0.2s, transform 0.4s ease 0.2s;
         }
 
         .lightbox.active .lightbox-info {
@@ -495,7 +609,7 @@
 
         .lightbox-info p {
             font-size: 0.95em;
-            color: #888;
+            color: #777;
             margin-bottom: 15px;
         }
 
@@ -507,8 +621,8 @@
         }
 
         .lightbox-tags .tag {
-            background: #1f1f1f;
-            border: 1px solid #333;
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
         }
 
         .lightbox-close {
@@ -518,19 +632,19 @@
             width: 45px;
             height: 45px;
             background: #1a1a1a;
-            border: 1px solid #333;
+            border: 1px solid #2a2a2a;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
             z-index: 1001;
         }
 
         .lightbox-close:hover {
-            background: #2a2a2a;
-            border-color: #555;
+            background: #ff4444;
+            border-color: #ff4444;
             transform: scale(1.1) rotate(90deg);
         }
 
@@ -542,31 +656,64 @@
             transition: stroke 0.2s ease;
         }
 
-        .lightbox-close:hover svg {
-            stroke: #fff;
+        .lightbox-close:hover svg { stroke: #fff; }
+
+        /* Nav arrows in lightbox */
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            background: rgba(26,26,26,0.8);
+            border: 1px solid #2a2a2a;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .lightbox-nav:hover {
+            background: rgba(59,130,246,0.3);
+            border-color: #3b82f6;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .lightbox-nav svg {
+            width: 20px;
+            height: 20px;
+            stroke: #888;
+            stroke-width: 2;
+            fill: none;
+            transition: stroke 0.2s ease;
+        }
+
+        .lightbox-nav:hover svg { stroke: #fff; }
+        .lightbox-prev { left: 20px; }
+        .lightbox-next { right: 80px; }
+
+        .lightbox-counter {
+            position: absolute;
+            bottom: 50px;
+            color: #444;
+            font-size: 0.8em;
+            letter-spacing: 2px;
         }
 
         .lightbox-hint {
             position: absolute;
             bottom: 20px;
-            color: #444;
-            font-size: 0.8em;
-            animation: fadeInOut 3s ease infinite;
+            color: #333;
+            font-size: 0.75em;
         }
 
-        @keyframes fadeInOut {
-            0%, 100% { opacity: 0.4; }
-            50% { opacity: 1; }
-        }
-
-        body.lightbox-open {
-            overflow: hidden;
-        }
+        body.lightbox-open { overflow: hidden; }
 
         /* ===== Footer ===== */
-        footer {
-            padding: 80px 0;
-        }
+        footer { padding: 80px 0; }
 
         .footer-content {
             display: flex;
@@ -581,24 +728,21 @@
             margin-bottom: 10px;
             letter-spacing: -1px;
             opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
+            transform: translateX(-20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
         }
 
         .footer-left h2.visible {
             opacity: 1;
-            transform: translateY(0);
+            transform: translateX(0);
         }
 
         .footer-left p {
-            color: #666;
+            color: #555;
             font-size: 0.95em;
         }
 
-        .socials {
-            display: flex;
-            gap: 15px;
-        }
+        .socials { display: flex; gap: 15px; }
 
         .social-link {
             display: flex;
@@ -610,31 +754,44 @@
             border-radius: 12px;
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             border: 1px solid #1f1f1f;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .social-link::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: currentColor;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-radius: 12px;
         }
 
         .social-link:hover {
-            background: #1f1f1f;
-            transform: translateY(-5px) scale(1.1);
+            transform: translateY(-6px) scale(1.1);
             border-color: #333;
         }
 
         .social-link svg {
             width: 22px;
             height: 22px;
-            fill: #888;
-            transition: fill 0.2s ease;
+            fill: #555;
+            transition: fill 0.2s ease, transform 0.3s ease;
+            position: relative;
+            z-index: 1;
         }
 
-        .social-link:hover svg { fill: #fff; }
-        .social-link.discord:hover svg { fill: #5865F2; }
-        .social-link.youtube:hover svg { fill: #FF0000; }
-        .social-link.twitter:hover svg { fill: #fff; }
-        .social-link.roblox:hover svg { fill: #fff; }
+        .social-link:hover svg { fill: #fff; transform: scale(1.1); }
+        .social-link.discord:hover { box-shadow: 0 10px 30px rgba(88,101,242,0.3); background: #5865F2; border-color: #5865F2; }
+        .social-link.youtube:hover { box-shadow: 0 10px 30px rgba(255,0,0,0.3); background: #FF0000; border-color: #FF0000; }
+        .social-link.twitter:hover { box-shadow: 0 10px 30px rgba(255,255,255,0.1); background: #222; border-color: #444; }
+        .social-link.roblox:hover { box-shadow: 0 10px 30px rgba(255,255,255,0.1); background: #222; border-color: #444; }
 
         .social-handles {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 5px;
             margin-top: 30px;
         }
 
@@ -642,18 +799,21 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            color: #666;
+            color: #555;
             font-size: 0.9em;
             text-decoration: none;
-            transition: all 0.2s ease;
-            padding: 8px 12px;
-            border-radius: 8px;
-            margin: -8px -12px;
+            transition: all 0.25s ease;
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: 1px solid transparent;
+            margin: 0 -14px;
         }
 
         .handle:hover {
             color: #fff;
-            background: #1a1a1a;
+            background: #141414;
+            border-color: #1f1f1f;
+            transform: translateX(5px);
         }
 
         .handle svg {
@@ -663,70 +823,53 @@
             transition: fill 0.2s ease;
         }
 
-        .handle:hover svg {
-            fill: #3b82f6;
-        }
-
-        /* ===== Scroll Progress Bar ===== */
-        .progress-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 2px;
-            background: linear-gradient(90deg, #3b82f6, #60a5fa);
-            z-index: 9999;
-            transition: width 0.1s ease;
-            box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
-        }
+        .handle:hover svg { fill: #3b82f6; }
 
         /* ===== Back to top ===== */
         .back-to-top {
             position: fixed;
             bottom: 30px;
             right: 30px;
-            width: 45px;
-            height: 45px;
-            background: #1a1a1a;
-            border: 1px solid #333;
+            width: 48px;
+            height: 48px;
+            background: #141414;
+            border: 1px solid #2a2a2a;
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             z-index: 500;
             opacity: 0;
-            transform: translateY(20px);
+            transform: translateY(20px) scale(0.8);
         }
 
         .back-to-top.visible {
             opacity: 1;
-            transform: translateY(0);
+            transform: translateY(0) scale(1);
         }
 
         .back-to-top:hover {
             background: #3b82f6;
             border-color: #3b82f6;
-            transform: translateY(-3px);
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 10px 25px rgba(59,130,246,0.4);
         }
 
         .back-to-top svg {
             width: 18px;
             height: 18px;
-            stroke: #888;
+            stroke: #666;
             stroke-width: 2;
             fill: none;
-            transition: stroke 0.2s ease;
+            transition: stroke 0.2s ease, transform 0.3s ease;
         }
 
-        .back-to-top:hover svg {
-            stroke: #fff;
-        }
+        .back-to-top:hover svg { stroke: #fff; transform: translateY(-2px); }
 
         /* ===== Responsive ===== */
-        @media (max-width: 1024px) {
-            .grid { grid-template-columns: repeat(2, 1fr); }
-        }
+        @media (max-width: 1024px) { .grid { grid-template-columns: repeat(2, 1fr); } }
 
         @media (max-width: 768px) {
             .container { padding: 0 20px; }
@@ -735,19 +878,17 @@
             .project-card.featured .project-image { height: 250px; }
             .footer-content { flex-direction: column; gap: 40px; }
             .nav-links { display: none; }
-            .lightbox img { max-width: 95%; max-height: 60vh; }
+            .lightbox img { max-width: 95%; max-height: 55vh; }
             .lightbox-close { top: 15px; right: 15px; }
-            .cursor, .cursor-dot { display: none; }
+            .lightbox-prev { left: 10px; }
+            .lightbox-next { right: 70px; }
+            .stats { gap: 30px; flex-wrap: wrap; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Custom Cursor -->
-    <div class="cursor" id="cursor"></div>
-    <div class="cursor-dot" id="cursorDot"></div>
-
-    <!-- Scroll Progress -->
+    <!-- Progress Bar -->
     <div class="progress-bar" id="progressBar"></div>
 
     <!-- Particles -->
@@ -769,12 +910,34 @@
     </nav>
 
     <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-grid"></div>
         <div class="container">
-            <h1>Roblox Builder<br>& Creator</h1>
+            <h1>Roblox Builder<br>& <span class="swap-word" id="swapWord">Creator</span></h1>
             <p>I create immersive worlds and detailed builds on Roblox. Available for commissions and collaborations.</p>
-            <div class="status">
-                <div class="status-dot"></div>
-                Available for work
+            <div style="display:flex; align-items:center; flex-wrap:wrap; gap:5px; margin-top:30px;">
+                <div class="status">
+                    <div class="status-dot"></div>
+                    Available for work
+                </div>
+                <div class="hero-badge">
+                    ✦ Art School Trained
+                </div>
+            </div>
+
+            <div class="stats">
+                <div class="stat">
+                    <span class="stat-number" data-target="8">0</span>
+                    <span class="stat-label">Builds Showcased</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number" data-target="100" data-suffix="%">0%</span>
+                    <span class="stat-label">Passion Driven</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number" data-suffix="+">∞</span>
+                    <span class="stat-label">Ideas Ready</span>
+                </div>
             </div>
         </div>
     </section>
@@ -782,13 +945,18 @@
     <section class="portfolio" id="work">
         <div class="container">
             <div class="section-title">Selected Work</div>
-            <div class="grid">
+            <div class="grid" id="projectGrid">
 
                 <!-- FEATURED — Cave -->
-                <div class="project-card featured" onclick="openLightbox(this)">
+                <div class="project-card featured" onclick="openLightbox(0)">
                     <div class="project-image">
-                        <img src="https://i.postimg.cc/RFCNVfp2/cave.png" alt="Ancient cave">
-                        <div class="click-hint">Click to expand</div>
+                        <img src="https://i.postimg.cc/RFCNVfp2/cave.png" alt="Ancient Cave">
+                        <div class="project-image-overlay">
+                            <div class="overlay-text">
+                                <svg viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                                Click to expand
+                            </div>
+                        </div>
                     </div>
                     <div class="project-info">
                         <h3>Ancient Cave</h3>
@@ -802,10 +970,15 @@
                 </div>
 
                 <!-- Ship -->
-                <div class="project-card" onclick="openLightbox(this)">
+                <div class="project-card" onclick="openLightbox(1)">
                     <div class="project-image">
-                        <img src="https://i.postimg.cc/m292482W/ship.png" alt="Ship build">
-                        <div class="click-hint">Click to expand</div>
+                        <img src="https://i.postimg.cc/m292482W/ship.png" alt="Ship">
+                        <div class="project-image-overlay">
+                            <div class="overlay-text">
+                                <svg viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                                Click to expand
+                            </div>
+                        </div>
                     </div>
                     <div class="project-info">
                         <h3>Voyager's Vessel</h3>
@@ -818,10 +991,15 @@
                 </div>
 
                 <!-- Stylized Islands -->
-                <div class="project-card" onclick="openLightbox(this)">
+                <div class="project-card" onclick="openLightbox(2)">
                     <div class="project-image">
                         <img src="https://i.postimg.cc/4xZKFrbn/Screenshot-2026-03-01-003404.png" alt="Stylized Islands">
-                        <div class="click-hint">Click to expand</div>
+                        <div class="project-image-overlay">
+                            <div class="overlay-text">
+                                <svg viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                                Click to expand
+                            </div>
+                        </div>
                     </div>
                     <div class="project-info">
                         <h3>Stylized Islands</h3>
@@ -834,10 +1012,15 @@
                 </div>
 
                 <!-- Enchanted Forest -->
-                <div class="project-card" onclick="openLightbox(this)">
+                <div class="project-card" onclick="openLightbox(3)">
                     <div class="project-image">
                         <img src="https://i.postimg.cc/nzchtD3Z/Screenshot-2025-07-17-224046.png" alt="Enchanted Forest">
-                        <div class="click-hint">Click to expand</div>
+                        <div class="project-image-overlay">
+                            <div class="overlay-text">
+                                <svg viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                                Click to expand
+                            </div>
+                        </div>
                     </div>
                     <div class="project-info">
                         <h3>Enchanted Forest</h3>
@@ -851,10 +1034,15 @@
                 </div>
 
                 <!-- Stylized Islands II -->
-                <div class="project-card" onclick="openLightbox(this)">
+                <div class="project-card" onclick="openLightbox(4)">
                     <div class="project-image">
                         <img src="https://i.postimg.cc/FHVf5N9t/Screenshot-2025-08-18-220223.png" alt="Stylized Islands II">
-                        <div class="click-hint">Click to expand</div>
+                        <div class="project-image-overlay">
+                            <div class="overlay-text">
+                                <svg viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                                Click to expand
+                            </div>
+                        </div>
                     </div>
                     <div class="project-info">
                         <h3>Stylized Islands II</h3>
@@ -868,10 +1056,15 @@
                 </div>
 
                 <!-- Sky Islands -->
-                <div class="project-card" onclick="openLightbox(this)">
+                <div class="project-card" onclick="openLightbox(5)">
                     <div class="project-image">
                         <img src="https://i.postimg.cc/3N28XFRz/Screenshot-2025-08-18-002846.png" alt="Sky Islands">
-                        <div class="click-hint">Click to expand</div>
+                        <div class="project-image-overlay">
+                            <div class="overlay-text">
+                                <svg viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                                Click to expand
+                            </div>
+                        </div>
                     </div>
                     <div class="project-info">
                         <h3>Sky Islands</h3>
@@ -885,10 +1078,15 @@
                 </div>
 
                 <!-- Forest Build -->
-                <div class="project-card" onclick="openLightbox(this)">
+                <div class="project-card" onclick="openLightbox(6)">
                     <div class="project-image">
                         <img src="https://i.postimg.cc/DfgtRNG8/im8677age.png" alt="Forest Build">
-                        <div class="click-hint">Click to expand</div>
+                        <div class="project-image-overlay">
+                            <div class="overlay-text">
+                                <svg viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                                Click to expand
+                            </div>
+                        </div>
                     </div>
                     <div class="project-info">
                         <h3>Forest Build</h3>
@@ -901,11 +1099,16 @@
                     </div>
                 </div>
 
-                <!-- New Build -->
-                <div class="project-card" onclick="openLightbox(this)">
+                <!-- Ruined Outpost -->
+                <div class="project-card" onclick="openLightbox(7)">
                     <div class="project-image">
-                        <img src="https://i.postimg.cc/0yFy1C9V/Screenshot-2026-04-18-001024.png" alt="New build">
-                        <div class="click-hint">Click to expand</div>
+                        <img src="https://i.postimg.cc/0yFy1C9V/Screenshot-2026-04-18-001024.png" alt="Ruined Outpost">
+                        <div class="project-image-overlay">
+                            <div class="overlay-text">
+                                <svg viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                                Click to expand
+                            </div>
+                        </div>
                     </div>
                     <div class="project-info">
                         <h3>Ruined Outpost</h3>
@@ -919,10 +1122,15 @@
                 </div>
 
                 <!-- First Build -->
-                <div class="project-card featured" onclick="openLightbox(this)">
+                <div class="project-card featured" onclick="openLightbox(8)">
                     <div class="project-image">
                         <img src="https://i.postimg.cc/D0Tn54Rc/Screenshot-2025-08-12-151252.png" alt="First Build">
-                        <div class="click-hint">Click to expand</div>
+                        <div class="project-image-overlay">
+                            <div class="overlay-text">
+                                <svg viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                                Click to expand
+                            </div>
+                        </div>
                     </div>
                     <div class="project-info">
                         <h3>First Build</h3>
@@ -946,13 +1154,20 @@
                 <line x1="6" y1="6" x2="18" y2="18"></line>
             </svg>
         </div>
+        <div class="lightbox-nav lightbox-prev" onclick="navigateLightbox(-1)">
+            <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </div>
+        <div class="lightbox-nav lightbox-next" onclick="navigateLightbox(1)">
+            <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </div>
         <img id="lightbox-img" src="" alt="">
         <div class="lightbox-info">
             <h3 id="lightbox-title"></h3>
             <p id="lightbox-desc"></p>
             <div class="lightbox-tags" id="lightbox-tags"></div>
         </div>
-        <div class="lightbox-hint">Click anywhere or press ESC to close</div>
+        <div class="lightbox-counter" id="lightbox-counter"></div>
+        <div class="lightbox-hint">ESC to close · Arrow keys to navigate</div>
     </div>
 
     <footer id="contact">
@@ -999,114 +1214,174 @@
     </footer>
 
     <script>
-        // ===== Custom Cursor =====
-        const cursor = document.getElementById('cursor');
-        const cursorDot = document.getElementById('cursorDot');
-
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
-            cursorDot.style.left = e.clientX + 'px';
-            cursorDot.style.top = e.clientY + 'px';
+        // ===== Click Ripple =====
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.project-card') || e.target.closest('a') || e.target.closest('button')) return;
+            const ripple = document.createElement('div');
+            ripple.classList.add('ripple');
+            ripple.style.left = e.clientX + 'px';
+            ripple.style.top = e.clientY + 'px';
+            ripple.style.background = 'rgba(59,130,246,0.15)';
+            ripple.style.border = '1px solid rgba(59,130,246,0.3)';
+            document.body.appendChild(ripple);
+            setTimeout(() => ripple.remove(), 800);
         });
 
-        document.querySelectorAll('a, button, .project-card, .lightbox-close, .back-to-top, .social-link').forEach(el => {
-            el.addEventListener('mouseenter', () => cursor.classList.add('hovering'));
-            el.addEventListener('mouseleave', () => cursor.classList.remove('hovering'));
-        });
-
-        // ===== Scroll Progress Bar =====
-        const progressBar = document.getElementById('progressBar');
+        // ===== Scroll Progress =====
         window.addEventListener('scroll', () => {
             const scrolled = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
-            progressBar.style.width = scrolled + '%';
-
-            // Nav shadow
+            document.getElementById('progressBar').style.width = scrolled + '%';
             document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
-
-            // Back to top
             document.getElementById('backToTop').classList.toggle('visible', window.scrollY > 400);
-
-            // Footer heading animation
-            const footerHeading = document.getElementById('footer-heading');
-            const rect = footerHeading.getBoundingClientRect();
-            if (rect.top < window.innerHeight - 50) {
-                footerHeading.classList.add('visible');
-            }
+            const fh = document.getElementById('footer-heading');
+            if (fh.getBoundingClientRect().top < window.innerHeight - 50) fh.classList.add('visible');
         });
 
-        // ===== Floating Particles =====
+        // ===== Particles =====
         const particlesContainer = document.getElementById('particles');
-        for (let i = 0; i < 25; i++) {
-            const particle = document.createElement('div');
-            particle.classList.add('particle');
-            particle.style.left = Math.random() * 100 + '%';
-            particle.style.width = (Math.random() * 3 + 1) + 'px';
-            particle.style.height = particle.style.width;
-            particle.style.animationDuration = (Math.random() * 15 + 10) + 's';
-            particle.style.animationDelay = (Math.random() * 10) + 's';
-            particle.style.opacity = Math.random() * 0.5;
-            particlesContainer.appendChild(particle);
+        const colors = ['#3b82f6', '#8b5cf6', '#22c55e', '#ec4899', '#f59e0b'];
+        for (let i = 0; i < 30; i++) {
+            const p = document.createElement('div');
+            p.classList.add('particle');
+            const size = Math.random() * 4 + 1;
+            p.style.cssText = `
+                left: ${Math.random() * 100}%;
+                width: ${size}px;
+                height: ${size}px;
+                background: ${colors[Math.floor(Math.random() * colors.length)]};
+                animation-duration: ${Math.random() * 20 + 12}s;
+                animation-delay: ${Math.random() * 15}s;
+                filter: blur(${Math.random() > 0.5 ? '1px' : '0px'});
+            `;
+            particlesContainer.appendChild(p);
         }
 
-        // ===== Scroll-triggered card animations =====
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry, index) => {
+        // ===== Word Swap =====
+        const words = ['Creator', 'Artist', 'Worldbuilder', 'Designer', 'Visionary'];
+        let wordIndex = 0;
+        const swapWord = document.getElementById('swapWord');
+        setInterval(() => {
+            swapWord.style.opacity = '0';
+            swapWord.style.transform = 'translateY(-10px)';
+            swapWord.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+            setTimeout(() => {
+                wordIndex = (wordIndex + 1) % words.length;
+                swapWord.textContent = words[wordIndex];
+                swapWord.style.transform = 'translateY(10px)';
+                swapWord.style.opacity = '0';
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                        swapWord.style.opacity = '1';
+                        swapWord.style.transform = 'translateY(0)';
+                    });
+                });
+            }, 400);
+        }, 2500);
+
+        // ===== Count Up =====
+        const counters = document.querySelectorAll('.stat-number[data-target]');
+        const countObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const el = entry.target;
+                    const target = parseInt(el.dataset.target);
+                    const suffix = el.dataset.suffix || '';
+                    let current = 0;
+                    const step = target / 40;
+                    const timer = setInterval(() => {
+                        current = Math.min(current + step, target);
+                        el.textContent = Math.floor(current) + suffix;
+                        if (current >= target) clearInterval(timer);
+                    }, 40);
+                    countObserver.unobserve(el);
+                }
+            });
+        }, { threshold: 0.5 });
+        counters.forEach(c => countObserver.observe(c));
+
+        // ===== Card scroll animations =====
+        const cardObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry, i) => {
                 if (entry.isIntersecting) {
                     setTimeout(() => {
                         entry.target.classList.add('visible');
-                        entry.target.style.transition = `opacity 0.6s ease, transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), background 0.3s ease, box-shadow 0.4s ease`;
-                    }, index * 80);
-                    observer.unobserve(entry.target);
+                        entry.target.style.transition = `opacity 0.7s ease, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease, box-shadow 0.4s ease`;
+                    }, i * 100);
+                    cardObserver.unobserve(entry.target);
                 }
             });
-        }, { threshold: 0.1 });
+        }, { threshold: 0.08 });
+        document.querySelectorAll('.project-card').forEach(c => cardObserver.observe(c));
 
-        document.querySelectorAll('.project-card').forEach(card => observer.observe(card));
+        // ===== Lightbox with navigation =====
+        const projects = [
+            { src: 'https://i.postimg.cc/RFCNVfp2/cave.png', title: 'Ancient Cave', desc: 'Atmospheric cave environment featuring dramatic natural lighting, detailed rock formations, and gothic architectural elements', tags: ['Environment','Realistic','Lighting'] },
+            { src: 'https://i.postimg.cc/m292482W/ship.png', title: "Voyager's Vessel", desc: 'Hand-crafted sailing ship with detailed hull work, full rigging, and weathered wood textures', tags: ['Vehicle','Detailed'] },
+            { src: 'https://i.postimg.cc/4xZKFrbn/Screenshot-2026-03-01-003404.png', title: 'Stylized Islands', desc: 'Vibrant floating island chain with lush hand-painted vegetation, crystal-clear waters, and a whimsical color palette', tags: ['Stylized','Terrain'] },
+            { src: 'https://i.postimg.cc/nzchtD3Z/Screenshot-2025-07-17-224046.png', title: 'Enchanted Forest', desc: 'Dense woodland environment with towering trees, volumetric god rays piercing through the canopy, and rich natural foliage', tags: ['Environment','Nature','Lighting'] },
+            { src: 'https://i.postimg.cc/FHVf5N9t/Screenshot-2025-08-18-220223.png', title: 'Stylized Islands II', desc: 'Expanded island archipelago featuring sculpted coastlines, tropical vegetation, and warm golden-hour atmosphere', tags: ['Stylized','Terrain','Expansion'] },
+            { src: 'https://i.postimg.cc/3N28XFRz/Screenshot-2025-08-18-002846.png', title: 'Sky Islands', desc: 'Majestic floating landmasses suspended above the clouds, featuring cascading waterfalls, lush canopies, and ethereal atmosphere', tags: ['Fantasy','Environment','Terrain'] },
+            { src: 'https://i.postimg.cc/DfgtRNG8/im8677age.png', title: 'Forest Build', desc: 'Richly detailed forest scene with layered vegetation, mossy undergrowth, and naturalistic tree placement creating an immersive woodland feel', tags: ['Nature','Environment','Detailed'] },
+            { src: 'https://i.postimg.cc/0yFy1C9V/Screenshot-2026-04-18-001024.png', title: 'Ruined Outpost', desc: 'A weathered and overgrown military outpost reclaimed by nature, featuring crumbling structures, dense foliage, and a moody post-apocalyptic atmosphere', tags: ['Realistic','Environment','Detailed'] },
+            { src: 'https://i.postimg.cc/D0Tn54Rc/Screenshot-2025-08-12-151252.png', title: 'First Build', desc: 'Where it all started — my very first Roblox build, showing early creativity and the spark that grew into a passion for world-building', tags: ['Origins','Milestone'] },
+        ];
 
-        // ===== Lightbox =====
+        let currentIndex = 0;
         const lightbox = document.getElementById('lightbox');
-        const lightboxImg = document.getElementById('lightbox-img');
-        const lightboxTitle = document.getElementById('lightbox-title');
-        const lightboxDesc = document.getElementById('lightbox-desc');
-        const lightboxTags = document.getElementById('lightbox-tags');
 
-        function openLightbox(card) {
-            const img = card.querySelector('.project-image img');
-            const title = card.querySelector('.project-info h3');
-            const desc = card.querySelector('.project-info p');
-            const tags = card.querySelectorAll('.project-tags .tag');
-            if (!img) return;
-
-            lightboxImg.src = img.src;
-            lightboxImg.alt = img.alt;
-            lightboxTitle.textContent = title.textContent;
-            lightboxDesc.textContent = desc.textContent;
-            lightboxTags.innerHTML = '';
-            tags.forEach(tag => {
-                const span = document.createElement('span');
-                span.className = 'tag';
-                span.textContent = tag.textContent;
-                lightboxTags.appendChild(span);
-            });
-
+        function openLightbox(index) {
+            currentIndex = index;
+            updateLightbox();
             lightbox.style.display = 'flex';
             requestAnimationFrame(() => lightbox.classList.add('active'));
             document.body.classList.add('lightbox-open');
         }
 
+        function updateLightbox() {
+            const p = projects[currentIndex];
+            const img = document.getElementById('lightbox-img');
+            img.style.opacity = '0';
+            img.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                img.src = p.src;
+                img.alt = p.title;
+                document.getElementById('lightbox-title').textContent = p.title;
+                document.getElementById('lightbox-desc').textContent = p.desc;
+                document.getElementById('lightbox-counter').textContent = `${currentIndex + 1} / ${projects.length}`;
+                const tagsEl = document.getElementById('lightbox-tags');
+                tagsEl.innerHTML = '';
+                p.tags.forEach(t => {
+                    const span = document.createElement('span');
+                    span.className = 'tag';
+                    span.textContent = t;
+                    tagsEl.appendChild(span);
+                });
+                img.style.opacity = '1';
+                img.style.transform = 'scale(1)';
+                img.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+            }, 150);
+        }
+
+        function navigateLightbox(dir) {
+            currentIndex = (currentIndex + dir + projects.length) % projects.length;
+            updateLightbox();
+        }
+
         function closeLightbox() {
             lightbox.classList.remove('active');
-            setTimeout(() => lightbox.style.display = 'none', 300);
+            setTimeout(() => lightbox.style.display = 'none', 400);
             document.body.classList.remove('lightbox-open');
         }
 
         lightbox.addEventListener('click', (e) => {
-            if (e.target === lightbox || e.target.classList.contains('lightbox-hint')) closeLightbox();
+            if (e.target === lightbox || e.target.classList.contains('lightbox-hint') || e.target.classList.contains('lightbox-counter')) closeLightbox();
         });
 
         document.addEventListener('keydown', (e) => {
+            if (!lightbox.classList.contains('active')) return;
             if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowRight') navigateLightbox(1);
+            if (e.key === 'ArrowLeft') navigateLightbox(-1);
         });
     </script>
 </body>
