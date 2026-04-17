@@ -17,17 +17,91 @@
             background-color: #0d0d0d;
             color: #e5e5e5;
             line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ===== Cursor ===== */
+        .cursor {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #3b82f6;
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.15s ease, border-color 0.2s ease;
+            transform: translate(-50%, -50%);
+        }
+
+        .cursor-dot {
+            width: 6px;
+            height: 6px;
+            background: #3b82f6;
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: transform 0.05s ease;
+        }
+
+        .cursor.hovering {
+            transform: translate(-50%, -50%) scale(2);
+            border-color: #60a5fa;
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        /* ===== Particles ===== */
+        #particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #3b82f6;
+            border-radius: 50%;
+            opacity: 0;
+            animation: floatParticle linear infinite;
+        }
+
+        @keyframes floatParticle {
+            0% { opacity: 0; transform: translateY(100vh) scale(0); }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.3; }
+            100% { opacity: 0; transform: translateY(-10vh) scale(1.5); }
         }
 
         .container {
             max-width: 1400px;
             margin: 0 auto;
             padding: 0 40px;
+            position: relative;
+            z-index: 1;
         }
 
+        /* ===== Nav ===== */
         nav {
             padding: 30px 0;
             border-bottom: 1px solid #1f1f1f;
+            position: sticky;
+            top: 0;
+            background: rgba(13, 13, 13, 0.85);
+            backdrop-filter: blur(20px);
+            z-index: 100;
+            transition: box-shadow 0.3s ease;
+        }
+
+        nav.scrolled {
+            box-shadow: 0 4px 30px rgba(59, 130, 246, 0.1);
         }
 
         nav .container {
@@ -41,10 +115,26 @@
             font-weight: 700;
             color: #fff;
             letter-spacing: -0.5px;
+            position: relative;
         }
 
         .logo span {
             color: #3b82f6;
+        }
+
+        .logo::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #3b82f6;
+            transition: width 0.3s ease;
+        }
+
+        .logo:hover::after {
+            width: 100%;
         }
 
         .nav-links {
@@ -59,15 +149,50 @@
             font-size: 0.9em;
             font-weight: 500;
             transition: color 0.2s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: #3b82f6;
+            transition: width 0.3s ease;
         }
 
         .nav-links a:hover {
             color: #fff;
         }
 
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* ===== Hero ===== */
         .hero {
             padding: 120px 0;
             border-bottom: 1px solid #1f1f1f;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(ellipse at center, rgba(59, 130, 246, 0.05) 0%, transparent 60%);
+            animation: heroGlow 8s ease-in-out infinite alternate;
+        }
+
+        @keyframes heroGlow {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(5%, 5%); }
         }
 
         .hero h1 {
@@ -77,6 +202,9 @@
             letter-spacing: -2px;
             margin-bottom: 20px;
             line-height: 1.1;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 0.8s ease forwards 0.2s;
         }
 
         .hero p {
@@ -84,6 +212,9 @@
             color: #666;
             max-width: 500px;
             font-weight: 400;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 0.8s ease forwards 0.4s;
         }
 
         .status {
@@ -96,6 +227,16 @@
             border-radius: 50px;
             font-size: 0.85em;
             color: #888;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 0.8s ease forwards 0.6s;
+            border: 1px solid #1f1f1f;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .status:hover {
+            border-color: #22c55e;
+            box-shadow: 0 0 20px rgba(34, 197, 94, 0.15);
         }
 
         .status-dot {
@@ -107,10 +248,15 @@
         }
 
         @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
+            0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4); }
+            50% { opacity: 0.8; box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
         }
 
+        @keyframes fadeUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== Section Title ===== */
         .section-title {
             font-size: 0.8em;
             font-weight: 600;
@@ -118,8 +264,21 @@
             text-transform: uppercase;
             letter-spacing: 2px;
             margin-bottom: 50px;
+            position: relative;
+            display: inline-block;
         }
 
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 30px;
+            height: 1px;
+            background: #3b82f6;
+        }
+
+        /* ===== Portfolio ===== */
         .portfolio {
             padding: 100px 0;
             border-bottom: 1px solid #1f1f1f;
@@ -135,13 +294,24 @@
             background: #141414;
             border-radius: 12px;
             overflow: hidden;
-            transition: transform 0.3s ease, background 0.3s ease;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                        background 0.3s ease,
+                        box-shadow 0.4s ease;
             cursor: pointer;
+            opacity: 0;
+            transform: translateY(40px);
+            border: 1px solid #1f1f1f;
+        }
+
+        .project-card.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .project-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px) scale(1.01);
             background: #1a1a1a;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(59, 130, 246, 0.2);
         }
 
         .project-card.featured {
@@ -170,11 +340,49 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.4s ease;
+            transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
 
         .project-card:hover .project-image img {
-            transform: scale(1.05);
+            transform: scale(1.08);
+        }
+
+        /* Image shine effect */
+        .project-image::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 60%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .project-card:hover .project-image::after {
+            left: 150%;
+        }
+
+        /* Click ripple overlay */
+        .project-image .click-hint {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.6);
+            color: #888;
+            font-size: 0.7em;
+            padding: 4px 10px;
+            border-radius: 20px;
+            opacity: 0;
+            transform: translateY(5px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            backdrop-filter: blur(4px);
+            border: 1px solid #333;
+        }
+
+        .project-card:hover .click-hint {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .project-info {
@@ -186,11 +394,21 @@
             font-weight: 600;
             color: #fff;
             margin-bottom: 8px;
+            transition: color 0.2s ease;
+        }
+
+        .project-card:hover .project-info h3 {
+            color: #60a5fa;
         }
 
         .project-info p {
             font-size: 0.9em;
             color: #666;
+            transition: color 0.2s ease;
+        }
+
+        .project-card:hover .project-info p {
+            color: #888;
         }
 
         .project-tags {
@@ -206,6 +424,13 @@
             border-radius: 6px;
             font-size: 0.75em;
             color: #888;
+            transition: background 0.2s ease, color 0.2s ease;
+            border: 1px solid transparent;
+        }
+
+        .project-card:hover .tag {
+            background: #252525;
+            border-color: #333;
         }
 
         /* ===== Lightbox ===== */
@@ -216,20 +441,19 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.92);
+            background: rgba(0, 0, 0, 0);
             z-index: 1000;
             align-items: center;
             justify-content: center;
             flex-direction: column;
             padding: 40px;
             cursor: pointer;
-            opacity: 0;
-            transition: opacity 0.3s ease;
+            transition: background 0.3s ease;
         }
 
         .lightbox.active {
             display: flex;
-            opacity: 1;
+            background: rgba(0, 0, 0, 0.92);
         }
 
         .lightbox img {
@@ -238,13 +462,28 @@
             border-radius: 12px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
             object-fit: contain;
-            transition: transform 0.3s ease;
+            transform: scale(0.9);
+            opacity: 0;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
+        }
+
+        .lightbox.active img {
+            transform: scale(1);
+            opacity: 1;
         }
 
         .lightbox-info {
             text-align: center;
             margin-top: 25px;
             max-width: 600px;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.3s ease 0.15s, transform 0.3s ease 0.15s;
+        }
+
+        .lightbox.active .lightbox-info {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .lightbox-info h3 {
@@ -292,7 +531,7 @@
         .lightbox-close:hover {
             background: #2a2a2a;
             border-color: #555;
-            transform: scale(1.1);
+            transform: scale(1.1) rotate(90deg);
         }
 
         .lightbox-close svg {
@@ -312,12 +551,19 @@
             bottom: 20px;
             color: #444;
             font-size: 0.8em;
+            animation: fadeInOut 3s ease infinite;
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 1; }
         }
 
         body.lightbox-open {
             overflow: hidden;
         }
 
+        /* ===== Footer ===== */
         footer {
             padding: 80px 0;
         }
@@ -334,6 +580,14 @@
             color: #fff;
             margin-bottom: 10px;
             letter-spacing: -1px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .footer-left h2.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .footer-left p {
@@ -354,13 +608,13 @@
             height: 50px;
             background: #141414;
             border-radius: 12px;
-            transition: all 0.2s ease;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             border: 1px solid #1f1f1f;
         }
 
         .social-link:hover {
             background: #1f1f1f;
-            transform: translateY(-3px);
+            transform: translateY(-5px) scale(1.1);
             border-color: #333;
         }
 
@@ -371,10 +625,7 @@
             transition: fill 0.2s ease;
         }
 
-        .social-link:hover svg {
-            fill: #fff;
-        }
-
+        .social-link:hover svg { fill: #fff; }
         .social-link.discord:hover svg { fill: #5865F2; }
         .social-link.youtube:hover svg { fill: #FF0000; }
         .social-link.twitter:hover svg { fill: #fff; }
@@ -394,17 +645,85 @@
             color: #666;
             font-size: 0.9em;
             text-decoration: none;
-            transition: color 0.2s ease;
+            transition: all 0.2s ease;
+            padding: 8px 12px;
+            border-radius: 8px;
+            margin: -8px -12px;
         }
 
-        .handle:hover { color: #fff; }
+        .handle:hover {
+            color: #fff;
+            background: #1a1a1a;
+        }
 
         .handle svg {
             width: 18px;
             height: 18px;
             fill: #444;
+            transition: fill 0.2s ease;
         }
 
+        .handle:hover svg {
+            fill: #3b82f6;
+        }
+
+        /* ===== Scroll Progress Bar ===== */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #3b82f6, #60a5fa);
+            z-index: 9999;
+            transition: width 0.1s ease;
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+        }
+
+        /* ===== Back to top ===== */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 45px;
+            height: 45px;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 500;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .back-to-top:hover {
+            background: #3b82f6;
+            border-color: #3b82f6;
+            transform: translateY(-3px);
+        }
+
+        .back-to-top svg {
+            width: 18px;
+            height: 18px;
+            stroke: #888;
+            stroke-width: 2;
+            fill: none;
+            transition: stroke 0.2s ease;
+        }
+
+        .back-to-top:hover svg {
+            stroke: #fff;
+        }
+
+        /* ===== Responsive ===== */
         @media (max-width: 1024px) {
             .grid { grid-template-columns: repeat(2, 1fr); }
         }
@@ -418,11 +737,28 @@
             .nav-links { display: none; }
             .lightbox img { max-width: 95%; max-height: 60vh; }
             .lightbox-close { top: 15px; right: 15px; }
+            .cursor, .cursor-dot { display: none; }
         }
     </style>
 </head>
 <body>
-    <nav>
+
+    <!-- Custom Cursor -->
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-dot" id="cursorDot"></div>
+
+    <!-- Scroll Progress -->
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- Particles -->
+    <div id="particles"></div>
+
+    <!-- Back to Top -->
+    <div class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+        <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"></polyline></svg>
+    </div>
+
+    <nav id="navbar">
         <div class="container">
             <div class="logo">slink<span>2000</span></div>
             <ul class="nav-links">
@@ -448,10 +784,11 @@
             <div class="section-title">Selected Work</div>
             <div class="grid">
 
-                <!-- ========== FEATURED — Cave Build ========== -->
+                <!-- FEATURED — Cave -->
                 <div class="project-card featured" onclick="openLightbox(this)">
                     <div class="project-image">
-                        <img src="https://i.postimg.cc/RFCNVfp2/cave.png" alt="Ancient cave environment with dramatic natural lighting and gothic architecture">
+                        <img src="https://i.postimg.cc/RFCNVfp2/cave.png" alt="Ancient cave">
+                        <div class="click-hint">Click to expand</div>
                     </div>
                     <div class="project-info">
                         <h3>Ancient Cave</h3>
@@ -464,10 +801,11 @@
                     </div>
                 </div>
 
-                <!-- ========== PROJECT 2 — Ship Build ========== -->
+                <!-- Ship -->
                 <div class="project-card" onclick="openLightbox(this)">
                     <div class="project-image">
-                        <img src="https://i.postimg.cc/m292482W/ship.png" alt="Detailed sailing ship build with full rigging and sails">
+                        <img src="https://i.postimg.cc/m292482W/ship.png" alt="Ship build">
+                        <div class="click-hint">Click to expand</div>
                     </div>
                     <div class="project-info">
                         <h3>Voyager's Vessel</h3>
@@ -479,10 +817,11 @@
                     </div>
                 </div>
 
-                <!-- ========== PROJECT 3 — Stylized Islands ========== -->
+                <!-- Stylized Islands -->
                 <div class="project-card" onclick="openLightbox(this)">
                     <div class="project-image">
-                        <img src="https://i.postimg.cc/4xZKFrbn/Screenshot-2026-03-01-003404.png" alt="Stylized floating islands with vibrant colors and lush vegetation">
+                        <img src="https://i.postimg.cc/4xZKFrbn/Screenshot-2026-03-01-003404.png" alt="Stylized Islands">
+                        <div class="click-hint">Click to expand</div>
                     </div>
                     <div class="project-info">
                         <h3>Stylized Islands</h3>
@@ -494,10 +833,11 @@
                     </div>
                 </div>
 
-                <!-- ========== PROJECT 4 — Enchanted Forest ========== -->
+                <!-- Enchanted Forest -->
                 <div class="project-card" onclick="openLightbox(this)">
                     <div class="project-image">
-                        <img src="https://i.postimg.cc/nzchtD3Z/Screenshot-2025-07-17-224046.png" alt="Dense enchanted forest with volumetric lighting filtering through the canopy">
+                        <img src="https://i.postimg.cc/nzchtD3Z/Screenshot-2025-07-17-224046.png" alt="Enchanted Forest">
+                        <div class="click-hint">Click to expand</div>
                     </div>
                     <div class="project-info">
                         <h3>Enchanted Forest</h3>
@@ -510,10 +850,11 @@
                     </div>
                 </div>
 
-                <!-- ========== PROJECT 5 — Stylized Islands II ========== -->
+                <!-- Stylized Islands II -->
                 <div class="project-card" onclick="openLightbox(this)">
                     <div class="project-image">
-                        <img src="https://i.postimg.cc/FHVf5N9t/Screenshot-2025-08-18-220223.png" alt="Stylized islands part two with expanded terrain and detailed coastline">
+                        <img src="https://i.postimg.cc/FHVf5N9t/Screenshot-2025-08-18-220223.png" alt="Stylized Islands II">
+                        <div class="click-hint">Click to expand</div>
                     </div>
                     <div class="project-info">
                         <h3>Stylized Islands II</h3>
@@ -526,10 +867,11 @@
                     </div>
                 </div>
 
-                <!-- ========== PROJECT 6 — Sky Islands ========== -->
+                <!-- Sky Islands -->
                 <div class="project-card" onclick="openLightbox(this)">
                     <div class="project-image">
-                        <img src="https://i.postimg.cc/3N28XFRz/Screenshot-2025-08-18-002846.png" alt="Floating sky islands suspended above the clouds with lush greenery">
+                        <img src="https://i.postimg.cc/3N28XFRz/Screenshot-2025-08-18-002846.png" alt="Sky Islands">
+                        <div class="click-hint">Click to expand</div>
                     </div>
                     <div class="project-info">
                         <h3>Sky Islands</h3>
@@ -542,10 +884,11 @@
                     </div>
                 </div>
 
-                <!-- ========== PROJECT 7 — Forest Build ========== -->
+                <!-- Forest Build -->
                 <div class="project-card" onclick="openLightbox(this)">
                     <div class="project-image">
-                        <img src="https://i.postimg.cc/DfgtRNG8/im8677age.png" alt="Lush forest build with detailed trees and natural ground cover">
+                        <img src="https://i.postimg.cc/DfgtRNG8/im8677age.png" alt="Forest Build">
+                        <div class="click-hint">Click to expand</div>
                     </div>
                     <div class="project-info">
                         <h3>Forest Build</h3>
@@ -558,10 +901,28 @@
                     </div>
                 </div>
 
-                <!-- ========== PROJECT 8 — First Build ========== -->
+                <!-- New Build -->
+                <div class="project-card" onclick="openLightbox(this)">
+                    <div class="project-image">
+                        <img src="https://i.postimg.cc/0yFy1C9V/Screenshot-2026-04-18-001024.png" alt="New build">
+                        <div class="click-hint">Click to expand</div>
+                    </div>
+                    <div class="project-info">
+                        <h3>Ruined Outpost</h3>
+                        <p>A weathered and overgrown military outpost reclaimed by nature, featuring crumbling structures, dense foliage, and a moody post-apocalyptic atmosphere</p>
+                        <div class="project-tags">
+                            <span class="tag">Realistic</span>
+                            <span class="tag">Environment</span>
+                            <span class="tag">Detailed</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- First Build -->
                 <div class="project-card featured" onclick="openLightbox(this)">
                     <div class="project-image">
-                        <img src="https://i.postimg.cc/D0Tn54Rc/Screenshot-2025-08-12-151252.png" alt="First ever Roblox build showing early creativity and passion for building">
+                        <img src="https://i.postimg.cc/D0Tn54Rc/Screenshot-2025-08-12-151252.png" alt="First Build">
+                        <div class="click-hint">Click to expand</div>
                     </div>
                     <div class="project-info">
                         <h3>First Build</h3>
@@ -577,10 +938,10 @@
         </div>
     </section>
 
-    <!-- ===== Lightbox Overlay ===== -->
+    <!-- Lightbox -->
     <div class="lightbox" id="lightbox">
         <div class="lightbox-close" onclick="closeLightbox()">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg viewBox="0 0 24 24" fill="none">
                 <line x1="18" y1="6" x2="6" y2="18"></line>
                 <line x1="6" y1="6" x2="18" y2="18"></line>
             </svg>
@@ -598,7 +959,7 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-left">
-                    <h2>Let's work together</h2>
+                    <h2 id="footer-heading">Let's work together</h2>
                     <p>Open for commissions and collaborations</p>
                     <div class="social-handles">
                         <a href="https://discord.com/users/jumpinglury" class="handle" target="_blank">
@@ -638,6 +999,72 @@
     </footer>
 
     <script>
+        // ===== Custom Cursor =====
+        const cursor = document.getElementById('cursor');
+        const cursorDot = document.getElementById('cursorDot');
+
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            cursorDot.style.left = e.clientX + 'px';
+            cursorDot.style.top = e.clientY + 'px';
+        });
+
+        document.querySelectorAll('a, button, .project-card, .lightbox-close, .back-to-top, .social-link').forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('hovering'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('hovering'));
+        });
+
+        // ===== Scroll Progress Bar =====
+        const progressBar = document.getElementById('progressBar');
+        window.addEventListener('scroll', () => {
+            const scrolled = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+            progressBar.style.width = scrolled + '%';
+
+            // Nav shadow
+            document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+
+            // Back to top
+            document.getElementById('backToTop').classList.toggle('visible', window.scrollY > 400);
+
+            // Footer heading animation
+            const footerHeading = document.getElementById('footer-heading');
+            const rect = footerHeading.getBoundingClientRect();
+            if (rect.top < window.innerHeight - 50) {
+                footerHeading.classList.add('visible');
+            }
+        });
+
+        // ===== Floating Particles =====
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 25; i++) {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.width = (Math.random() * 3 + 1) + 'px';
+            particle.style.height = particle.style.width;
+            particle.style.animationDuration = (Math.random() * 15 + 10) + 's';
+            particle.style.animationDelay = (Math.random() * 10) + 's';
+            particle.style.opacity = Math.random() * 0.5;
+            particlesContainer.appendChild(particle);
+        }
+
+        // ===== Scroll-triggered card animations =====
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                        entry.target.style.transition = `opacity 0.6s ease, transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), background 0.3s ease, box-shadow 0.4s ease`;
+                    }, index * 80);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.project-card').forEach(card => observer.observe(card));
+
+        // ===== Lightbox =====
         const lightbox = document.getElementById('lightbox');
         const lightboxImg = document.getElementById('lightbox-img');
         const lightboxTitle = document.getElementById('lightbox-title');
@@ -649,14 +1076,12 @@
             const title = card.querySelector('.project-info h3');
             const desc = card.querySelector('.project-info p');
             const tags = card.querySelectorAll('.project-tags .tag');
-
             if (!img) return;
 
             lightboxImg.src = img.src;
             lightboxImg.alt = img.alt;
             lightboxTitle.textContent = title.textContent;
             lightboxDesc.textContent = desc.textContent;
-
             lightboxTags.innerHTML = '';
             tags.forEach(tag => {
                 const span = document.createElement('span');
@@ -665,25 +1090,23 @@
                 lightboxTags.appendChild(span);
             });
 
-            lightbox.classList.add('active');
+            lightbox.style.display = 'flex';
+            requestAnimationFrame(() => lightbox.classList.add('active'));
             document.body.classList.add('lightbox-open');
         }
 
         function closeLightbox() {
             lightbox.classList.remove('active');
+            setTimeout(() => lightbox.style.display = 'none', 300);
             document.body.classList.remove('lightbox-open');
         }
 
-        lightbox.addEventListener('click', function(e) {
-            if (e.target === lightbox || e.target === document.querySelector('.lightbox-hint')) {
-                closeLightbox();
-            }
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox || e.target.classList.contains('lightbox-hint')) closeLightbox();
         });
 
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeLightbox();
-            }
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeLightbox();
         });
     </script>
 </body>
